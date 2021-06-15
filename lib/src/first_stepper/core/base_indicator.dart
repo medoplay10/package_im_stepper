@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class BaseIndicator extends StatelessWidget {
   /// Whether this indicator is selected or not.
   final bool isSelected;
-
+  /// Each number defines a step. Hence, total count of numbers determines the total number of steps.
+  final String? title;
   /// The child to be placed within the indicator.
   final Widget? child;
 
@@ -32,6 +33,7 @@ class BaseIndicator extends StatelessWidget {
   final double margin;
 
   BaseIndicator({
+    this.title,
     this.isSelected = false,
     this.child,
     this.onPressed,
@@ -51,26 +53,41 @@ class BaseIndicator extends StatelessWidget {
       decoration: BoxDecoration(
         border: isSelected
             ? Border.all(
-                color: activeBorderColor ?? Colors.blue,
-                width: activeBorderWidth,
-              )
+          color: activeBorderColor ?? Colors.blue,
+          width: activeBorderWidth,
+        )
             : null,
         shape: BoxShape.circle,
       ),
       child: InkWell(
         onTap: onPressed as void Function()?,
-        child: Container(
-          height: radius * 2,
-          width: radius * 2,
-          padding: EdgeInsets.all(padding),
-          decoration: BoxDecoration(
-            color:
+        child:Column(
+
+          children: [
+            Container (
+              height: radius * 2,
+              width: radius * 2,
+              padding: EdgeInsets.all(padding),
+              decoration: BoxDecoration(
+                color:
                 isSelected ? activeColor ?? Colors.green : color ?? Colors.grey,
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: child,
-          ),
+                shape: BoxShape.circle,
+              ),
+              child:
+
+              Center(
+                child: child,
+              ),
+            ),
+            Container (
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 5),
+              padding: EdgeInsets.all(padding),
+
+              child:  Text(title!,textAlign:TextAlign.center ,),
+            ),
+
+          ],
         ),
       ),
     );

@@ -6,6 +6,9 @@ class NumberStepper extends StatelessWidget {
   /// Each number defines a step. Hence, total count of numbers determines the total number of steps.
   final List<int>? numbers;
 
+  /// Each number defines a step. Hence, total count of numbers determines the total number of steps.
+  final List<String>? title;
+
   /// Whether to enable or disable the next and previous buttons.
   final bool enableNextPreviousButtons;
 
@@ -78,6 +81,7 @@ class NumberStepper extends StatelessWidget {
   /// Creates a NumberStepper widget.
   NumberStepper({
     this.numbers,
+    this.title,
     this.enableNextPreviousButtons = true,
     this.enableStepTapping = true,
     this.previousButtonIcon,
@@ -106,6 +110,7 @@ class NumberStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseStepper(
+      title: title,
       children: _numbersWrappedInText(),
       nextPreviousButtonsDisabled: enableNextPreviousButtons,
       stepTappingDisabled: enableStepTapping,
@@ -134,7 +139,9 @@ class NumberStepper extends StatelessWidget {
 
   /// Wraps the integer numbers in Text widget. User style is also applied except the `fontSize` which is calculated automatically.
   List<Widget> _numbersWrappedInText() {
+
     return List.generate(numbers!.length, (index) {
+
       return FittedBox(
         child: Text(
           '${numbers![index]}',

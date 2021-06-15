@@ -10,6 +10,8 @@ class BaseStepper extends StatefulWidget {
   /// Each child defines a step. Hence, total number of children determines the total number of steps.
   final List<Widget>? children;
 
+  /// Each number defines a step. Hence, total count of numbers determines the total number of steps.
+  final List<String>? title;
   /// Whether to enable or disable the next and previous buttons.
   final bool nextPreviousButtonsDisabled;
 
@@ -78,6 +80,7 @@ class BaseStepper extends StatefulWidget {
 
   /// Creates a basic stepper.
   BaseStepper({
+    this.title,
     this.children,
     this.nextPreviousButtonsDisabled = true,
     this.stepTappingDisabled = true,
@@ -103,18 +106,18 @@ class BaseStepper extends StatefulWidget {
     this.alignment,
   }) {
     assert(
-      lineDotRadius <= 10 && lineDotRadius > 0,
-      'lineDotRadius must be less than or equal to 10 and greater than 0',
+    lineDotRadius <= 10 && lineDotRadius > 0,
+    'lineDotRadius must be less than or equal to 10 and greater than 0',
     );
 
     assert(
-      stepRadius > 0,
-      'iconIndicatorRadius must be greater than 0',
+    stepRadius > 0,
+    'iconIndicatorRadius must be greater than 0',
     );
 
     assert(
-      activeStep >= 0 && activeStep <= children!.length,
-      'Error: Active Step out of range',
+    activeStep >= 0 && activeStep <= children!.length,
+    'Error: Active Step out of range',
     );
   }
 
@@ -170,23 +173,23 @@ class _BaseStepperState extends State<BaseStepper> {
 
     return widget.direction == Axis.horizontal
         ? Row(
-            children: <Widget>[
-              widget.nextPreviousButtonsDisabled ? _previousButton() : Container(),
-              Expanded(
-                child: _stepperBuilder(),
-              ),
-              widget.nextPreviousButtonsDisabled ? _nextButton() : Container(),
-            ],
-          )
+      children: <Widget>[
+        widget.nextPreviousButtonsDisabled ? _previousButton() : Container(),
+        Expanded(
+          child: _stepperBuilder(),
+        ),
+        widget.nextPreviousButtonsDisabled ? _nextButton() : Container(),
+      ],
+    )
         : Column(
-            children: <Widget>[
-              widget.nextPreviousButtonsDisabled ? _previousButton() : Container(),
-              Expanded(
-                child: _stepperBuilder(),
-              ),
-              widget.nextPreviousButtonsDisabled ? _nextButton() : Container(),
-            ],
-          );
+      children: <Widget>[
+        widget.nextPreviousButtonsDisabled ? _previousButton() : Container(),
+        Expanded(
+          child: _stepperBuilder(),
+        ),
+        widget.nextPreviousButtonsDisabled ? _nextButton() : Container(),
+      ],
+    );
   }
 
   /// Builds the stepper.
@@ -210,20 +213,20 @@ class _BaseStepperState extends State<BaseStepper> {
   List<Widget> _buildSteps() {
     return List.generate(
       widget.children!.length,
-      (index) {
+          (index) {
         return widget.direction == Axis.horizontal
             ? Row(
-                children: <Widget>[
-                  _customizedIndicator(index),
-                  _customizedDottedLine(index, Axis.horizontal),
-                ],
-              )
+          children: <Widget>[
+            _customizedIndicator(index),
+            _customizedDottedLine(index, Axis.horizontal),
+          ],
+        )
             : Column(
-                children: <Widget>[
-                  _customizedIndicator(index),
-                  _customizedDottedLine(index, Axis.vertical),
-                ],
-              );
+          children: <Widget>[
+            _customizedIndicator(index),
+            _customizedDottedLine(index, Axis.vertical),
+          ],
+        );
       },
     );
   }
@@ -231,20 +234,21 @@ class _BaseStepperState extends State<BaseStepper> {
   /// A customized IconStep.
   Widget _customizedIndicator(int index) {
     return BaseIndicator(
+      title: widget. title![index],
       child: widget.children![index],
       isSelected: _selectedIndex == index,
       onPressed: widget.stepTappingDisabled
           ? () {
-              if (widget.steppingEnabled) {
-                setState(() {
-                  _selectedIndex = index;
+        if (widget.steppingEnabled) {
+          setState(() {
+            _selectedIndex = index;
 
-                  if (widget.onStepReached != null) {
-                    widget.onStepReached!(_selectedIndex);
-                  }
-                });
-              }
+            if (widget.onStepReached != null) {
+              widget.onStepReached!(_selectedIndex);
             }
+          });
+        }
+      }
           : null,
       color: widget.stepColor,
       activeColor: widget.activeStepColor,
@@ -260,12 +264,12 @@ class _BaseStepperState extends State<BaseStepper> {
   Widget _customizedDottedLine(int index, Axis axis) {
     return index < widget.children!.length - 1
         ? DottedLine(
-            length: widget.lineLength,
-            color: widget.lineColor ?? Colors.blue,
-            dotRadius: widget.lineDotRadius,
-            spacing: 5.0,
-            axis: axis,
-          )
+      length: widget.lineLength,
+      color: widget.lineColor ?? Colors.blue,
+      dotRadius: widget.lineDotRadius,
+      spacing: 5.0,
+      axis: axis,
+    )
         : Container();
   }
 
